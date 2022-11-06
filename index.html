@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Toggler Example</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="theme.toggler.css">
+    <style>
+        :root{
+            --bg-color: #aebbc9;
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: #212529;
+        }
+
+        body {
+            color: var(--themeToggler-text-color);
+            background-color: var(--bg-color);
+        }
+    </style>
+    <script>
+        // Gets last saved theme on local storage, if null sets the theme based on system preference
+        let theme = localStorage.getItem('data-theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light');
+
+        document.onreadystatechange = () => {
+            // Sets the theme
+            setTheme(theme);
+
+            // Get the element based on ID, checks it if theme is dark and add onchange event listener
+            const togglerCustom = document.getElementById("themeTogglerCustom");
+            togglerCustom.checked = theme == 'dark' ? true : false;
+            togglerCustom.onchange = (event) => {
+                changeTheme();
+                toggler.checked = togglerCustom.checked;
+            }
+
+            // Same as before but for Bootstrap switch
+            const toggler = document.getElementById("themeToggler");
+            toggler.checked = theme == 'dark' ? true : false;
+            toggler.onchange = (event) => {
+                changeTheme();
+                togglerCustom.checked = toggler.checked;
+            }
+        }
+
+        const changeTheme = () => {
+            document.body.style.transition = "background-color 0.5s";
+            setTheme(theme != 'light' ? 'light' : 'dark');
+        }
+
+        const setTheme = (newTheme) => {
+            theme = newTheme; // set newTheme to theme
+            document.documentElement.setAttribute("data-theme", newTheme) // set newTheme to data-theme
+            localStorage.setItem("data-theme", newTheme) // save newTheme to local storage
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="row align-self-center w-100">
+            <div class="col-12 text-center">
+                <span class="fs-1">DARK THEME TOGGLERS EXAMPLE</span>
+                <br><span class="fs-4">Common code between both implementations:</span><br><span class="fs-6">Click on buttons to see/expand the code</span><br><br>
+                <!-- BOOTSTRAP -->
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBOOTSTRAP" aria-expanded="false" aria-controls="collapseBOOTSTRAP">
+                    Bootstrap CDN
+                </button><br>
+                <div class="collapse" id="collapseBOOTSTRAP">
+<pre><code class="language-html">&lt;!-- CSS only --&gt;
+&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"&gt;
+&lt;!-- JavaScript Bundle with Popper --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"&gt;&lt;/script&gt;
+</code></pre>
+                </div>
+                <!-- CSS -->
+                <br><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCSS" aria-expanded="false" aria-controls="collapseCSS">
+                    CSS
+                </button><br>
+                <div class="collapse" id="collapseCSS">
+                    <div class="row d-flex align-items-center">
+                    <div class="col-12 col-md-6 m-0">
+Done with CSS variables:
+<pre><code class="language-css">:root {
+    --bg-color: #6c757d;
+    --text-color : black;
+}
+
+[data-theme="dark"] {
+    --bg-color: #212529;
+    --text-color: white;
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+.pointer * {
+    cursor: pointer;
+    user-select: none;
+}
+</code></pre>
+                    </div>
+                    <div class="col-12 col-md-6">
+Or the same can be achieved this way: <br><br>
+<pre><code class="language-css">body {
+    color: white;
+    background-color: #6c757d;
+}
+
+[data-theme="dark"] body {
+    color: black;
+    background-color: #212529;
+}
+
+.pointer * {
+    cursor: pointer;
+    user-select: none;
+}
+</code></pre>
+                    </div>
+                    </div>
+                </div>
+                <!-- JS -->
+                <br><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJS" aria-expanded="false" aria-controls="collapseJS">
+                    JS
+                </button><br>
+                <div class="collapse" id="collapseJS">
+This script is recommended to be on the HTML head so the theme can be stablish before the page loads, this avoids the page flashing when the theme changes on slow connections or CPUs
+<br><br>Include the script via jsDelivr CDN:
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/gh/Haruki1707/ThemeToggler/dist/theme.toggler.min.js" crossorigin="anonymous"&gt;&lt;/script&gt;</code></pre>
+<br>Or instead check the code:
+<pre><code class="language-js">// Gets last saved theme on local storage, if null sets the theme based on the system preferences
+let theme = localStorage.getItem('data-theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light');
+
+document.onreadystatechange = () => {
+    // Sets the theme
+    setTheme(theme);
+
+    // Gets the element based on ID, adds 'checked' attribute if theme is dark and adds onchange event listener
+    const themeToggler = document.getElementById("themeToggler");
+    themeToggler.checked = theme == 'dark' ? true : false;
+    themeToggler.onchange = (event) => setTheme(theme != 'light' ? 'light' : 'dark');
+};
+
+const setTheme = (newTheme) => {
+    theme = newTheme; // sets newTheme to theme
+    localStorage.setItem("data-theme", newTheme) // saves newTheme to local storage
+    document.documentElement.setAttribute("data-theme", newTheme) // sets newTheme to data-theme
+}
+</code></pre>
+                </div><br>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-center flex-column">
+                <hr class="w-100">
+                <div class="form-check form-switch pointer">
+                    <input class="form-check-input" type="checkbox" role="switch" id="themeToggler">
+                    <label class="form-check-label" for="themeToggler">Dark theme</label>
+                </div>
+                <br><span class="fs-5">Required code for bootstrap switch implementation:</span>
+                <!-- HTML -->
+                <br><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHTMLB" aria-expanded="false" aria-controls="collapseHTMLB">
+                    HTML
+                </button><br>
+                <div class="collapse w-100" id="collapseHTMLB">
+<pre><code class="language-html">&lt;div class="form-check form-switch pointer"&gt;
+    &lt;input class="form-check-input" type="checkbox" role="switch" id="themeToggler"&gt;
+    &lt;label class="form-check-label" for="themeToggler"&gt;Dark theme&lt;/label&gt;
+&lt;/div&gt;
+</code></pre>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-center flex-column">
+                <hr class="w-100">
+                <label class="pointer d-flex align-items-center justify-content-center">
+                    <div class="themeToggler-switch d-flex align-items-center justify-content-center">
+                        <input type="checkbox" class="d-none" id="themeTogglerCustom">
+                        <i class="bi bi-circle-fill text-light themeToggler-circle"></i>
+                        <i class="bi bi-sun text-dark themeToggler-icon"></i>
+                        <i class="bi bi-moon-fill text-light themeToggler-icon"></i>
+                    </div>
+                    <span class="themeToggler-text">Dark theme</span>
+                </label>
+                <br><span class="fs-5">Required code for custom switch implementation:</span>
+                <!-- BOOTSTRAP ICONS-->
+                <br><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBOOTSTRAPICONS" aria-expanded="false" aria-controls="collapseBOOTSTRAPICONS">
+                    Bootstrap Icons CDN
+                </button>
+                <div class="collapse w-100" id="collapseBOOTSTRAPICONS">
+<pre><code class="language-html">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"&gt;
+</code></pre>
+                </div>
+
+                <!-- HTML -->
+                <br><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHTMLCUSTOM" aria-expanded="false" aria-controls="collapseHTMLCUSTOM">
+                    HTML
+                </button>
+                <div class="collapse w-100" id="collapseHTMLCUSTOM">
+<pre><code class="language-html">&lt;label class="pointer d-flex align-items-center justify-content-center"&gt;
+    &lt;div class="themeToggler-switch d-flex align-items-center justify-content-center"&gt;
+        &lt;input type="checkbox" class="d-none" id="themeToggler"&gt;
+        &lt;i class="bi bi-circle-fill text-light themeToggler-circle"&gt;&lt;/i&gt;
+        &lt;i class="bi bi-brightness-high text-dark themeToggler-icon"&gt;&lt;/i&gt;
+        &lt;i class="bi bi-moon-fill text-light themeToggler-icon"&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;span class="themeToggler-text"&gt;Dark theme&lt;/span&gt;
+&lt;/label&gt;
+</code></pre>
+            </div>
+
+            <!-- CSS -->
+                <br><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCSSCUSTOM" aria-expanded="false" aria-controls="collapseCSSCUSTOM">
+                    CSS
+                </button>
+                <div class="collapse w-100" id="collapseCSSCUSTOM">
+                    <br>Include the style via jsDelivr CDN (already includes the 'pointer' class):
+<pre><code class="language-html">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Haruki1707/ThemeToggler/dist/theme.toggler.min.css" crossorigin="anonymous"&gt;</code></pre>
+                    <br>Or instead check the code:
+<pre><code class="language-css">:root{
+    /*This variables can be modified to customize the themeToggler */
+    --themeToggler-bg-color: #0c0b13;
+    --themeToggler-text-color: black;
+}
+
+[data-theme="dark"] {
+    --themeToggler-bg-color: #9c9ca3;
+    --themeToggler-text-color: white;
+}
+
+.themeToggler-switch {
+    width: 64px;
+    height: 30px;
+    padding: 6px;
+    font-size: 20px;
+    border-radius: 60px;
+    transition: all 0.5s;
+    background-color: var(--themeToggler-bg-color);
+}
+
+.themeToggler-circle {
+    font-size: 24px;
+    position: absolute;
+    transition: all 0.5s;
+    transform: translateX(-16px) translateY(-1px);
+}
+
+.themeToggler-icon {
+    padding: 6px;
+    font-size: 20px;
+    padding-bottom: 7px;
+}
+
+.themeToggler-text {
+    padding-left: 5px;
+    transition: all 0.5s;
+    color: var(--themeToggler-text-color);
+}
+
+[data-theme="dark"] .themeToggler-circle {
+    transform: translateX(16px) translateY(-1px);
+}
+</code></pre>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+
+</html>
