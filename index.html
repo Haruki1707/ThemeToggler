@@ -253,6 +253,10 @@ const setTheme = (newTheme) => {
     --themeToggler-text-color: white;
 }
 
+[class*=" themeToggler-"]::before {
+    display: block !important;
+}
+
 .themeToggler-switch {
     width: 64px;
     height: 30px;
