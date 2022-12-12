@@ -154,9 +154,9 @@ let defaultTheme =  typeof modifyDefaultTheme !== 'undefined' ? modifyDefaultThe
 let theme = localStorage.getItem('data-theme') || (getColorPreference ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light') : defaultTheme);
 
 const setTheme = (newTheme) => {
-    theme = newTheme; // set newTheme to theme
-    document.documentElement.setAttribute("data-theme", newTheme) // set newTheme to data-theme
-    localStorage.setItem("data-theme", newTheme) // save newTheme to local storage
+    theme = newTheme; // sets newTheme to theme
+    localStorage.setItem("data-theme", newTheme) // saves newTheme to local storage
+    document.documentElement.setAttribute("data-theme", newTheme) // sets newTheme to data-theme
 }
 
 // Sets the theme
@@ -168,12 +168,6 @@ document.onreadystatechange = () => {
     themeToggler.checked = theme == 'dark' ? true : false;
     themeToggler.onchange = (event) => setTheme(theme != 'light' ? 'light' : 'dark');
 };
-
-const setTheme = (newTheme) => {
-    theme = newTheme; // sets newTheme to theme
-    localStorage.setItem("data-theme", newTheme) // saves newTheme to local storage
-    document.documentElement.setAttribute("data-theme", newTheme) // sets newTheme to data-theme
-}
 </code></pre>
                 </div><br>
             </div>
@@ -262,6 +256,7 @@ const setTheme = (newTheme) => {
     height: 30px;
     padding: 6px;
     font-size: 20px;
+    position: relative;
     border-radius: 60px;
     transition: all 0.5s;
     background-color: var(--themeToggler-bg-color);
